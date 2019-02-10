@@ -82,3 +82,7 @@ tests/title
 tests/vulkan
 tests/windows
 
+# bin
+/bin
+/bin-int
+
