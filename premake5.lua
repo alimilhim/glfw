@@ -1,6 +1,7 @@
 project "GLFW"
     kind "StaticLib"
     language "C"
+    staticruntime "on"
     
 	targetdir ("bin/" .. outdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outdir .. "/%{prj.name}")
@@ -20,7 +21,6 @@ project "GLFW"
     
 	filter "system:windows"
         systemversion "latest"
-        staticruntime "On"
         
         files
         {
@@ -39,12 +39,37 @@ project "GLFW"
 		{ 
             "_GLFW_WIN32",
             "_CRT_SECURE_NO_WARNINGS"
-		}
-	
-	filter { "system:windows", "configurations:Release" }
-        buildoptions "/MT"
+        }
 
-    filter "system:not windows"
-		buildoptions { "-std=c11", "-lgdi32" }	
-	
+    filter "system:macosx"
 
+        files
+        {
+            "src/cocoa_init.m",
+            "src/cocoa_joystick.m",
+            "src/cocoa_monitor.m",
+            "src/cocoa_time.c",
+            "src/cocoa_window.m",
+            "src/nsgl_context.m",
+            "src/posix_thread.c",
+            "src/egl_context.c",
+            "src/osmesa_context.c"
+        }
+		defines 
+		{ 
+            "_GLFW_COCOA",
+            "_CRT_SECURE_NO_WARNINGS"
+        }
+     
+
+	
+        filter "configurations:Debug"
+            symbols "on"
+            runtime "Debug"
+
+
+        filter "configurations:Release"
+            optimize "on"
+            runtime "Release"
+
+       
